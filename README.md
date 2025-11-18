@@ -1,1 +1,338 @@
-# web-sikyon
+# Sikyon Survey Project - Web Application
+
+A modern web application for visualizing and exploring archaeological survey data from the ancient Greek city of Sikyon. Built with Node.js, Express, React, and MapLibre GL.
+
+## Features
+
+- **Interactive Map**: Explore Sikyon archaeological data on an interactive map using MapLibre GL
+- **Multiple Data Layers**: Toggle between different archaeological datasets (pottery, architecture, coins, survey tracts)
+- **Advanced Filtering**: Filter data by period, type, and other attributes
+- **Feature Details**: Click on map features to view detailed information in a modal
+- **Modern UI**: Clean, responsive interface with smooth animations
+- **Sample Data**: Includes sample data for demonstration (can be replaced with actual Sikyon data)
+
+## Project Structure
+
+```
+web-sikyon/
+├── backend/                 # Node.js Express server
+│   ├── src/
+│   │   ├── controllers/     # Request handlers
+│   │   ├── routes/          # API routes
+│   │   ├── services/        # Business logic
+│   │   └── index.js         # Server entry point
+│   ├── public/
+│   │   └── data/           # GeoJSON data files
+│   └── package.json
+├── frontend/                # React application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── services/        # API clients
+│   │   ├── styles/          # CSS files
+│   │   └── App.js           # Main app component
+│   └── package.json
+└── package.json             # Root package (scripts for both)
+```
+
+## Technology Stack
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express** - Web framework
+- **shpjs** - Shapefile to GeoJSON conversion
+- **CORS** - Cross-origin resource sharing
+
+### Frontend
+- **React** - UI framework
+- **MapLibre GL JS** - Modern mapping library
+- **react-map-gl** - React wrapper for MapLibre
+- **Axios** - HTTP client
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 16+ and npm
+- Git
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd web-sikyon
+```
+
+2. Install all dependencies:
+```bash
+npm run install:all
+```
+
+This will install dependencies for the root, backend, and frontend.
+
+### Running the Application
+
+#### Development Mode (Both servers)
+
+Run both backend and frontend concurrently:
+```bash
+npm run dev
+```
+
+- Backend will run on `http://localhost:5000`
+- Frontend will run on `http://localhost:3000`
+
+#### Run Separately
+
+Backend only:
+```bash
+npm run server:dev
+```
+
+Frontend only:
+```bash
+npm run client:dev
+```
+
+### Production Build
+
+Build the frontend for production:
+```bash
+npm run build
+```
+
+## Loading Sikyon Data from Zenodo
+
+The Sikyon Survey Project data is available at: https://zenodo.org/records/1054450
+
+### Step 1: Download the Data
+
+1. Visit https://zenodo.org/records/1054450
+2. Download the file: `sikyon-survey-project-dissemination.zip` (3.1 GB)
+3. Extract the ZIP file
+
+### Step 2: Convert Shapefiles to GeoJSON
+
+The dataset includes ESRI Shapefiles in the GIS folder. You'll need to convert these to GeoJSON format.
+
+#### Option A: Using GDAL (Recommended)
+
+Install GDAL (if not already installed):
+```bash
+# macOS
+brew install gdal
+
+# Ubuntu/Debian
+sudo apt-get install gdal-bin
+
+# Windows
+# Download from https://gdal.org/
+```
+
+Convert shapefiles to GeoJSON:
+```bash
+ogr2ogr -f GeoJSON output.geojson input.shp
+```
+
+#### Option B: Using Online Tools
+
+- Visit https://mapshaper.org/
+- Upload your .shp, .shx, .dbf files
+- Export as GeoJSON
+
+#### Option C: Using Node.js
+
+You can use the `shpjs` library (already included in backend dependencies):
+
+```javascript
+const shp = require('shpjs');
+const fs = require('fs');
+
+// Read shapefile buffer
+const buffer = fs.readFileSync('path/to/shapefile.shp');
+
+// Convert to GeoJSON
+shp(buffer).then(geojson => {
+  fs.writeFileSync('output.geojson', JSON.stringify(geojson));
+});
+```
+
+### Step 3: Load Data into Application
+
+1. Place your converted GeoJSON files in `backend/public/data/`
+2. Name them according to their content (e.g., `pottery.geojson`, `architecture.geojson`, `coins.geojson`)
+3. The backend will automatically detect and serve these files
+4. Restart the backend server to load the new data
+
+### Expected Data Structure
+
+GeoJSON files should follow this structure:
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [longitude, latitude]
+      },
+      "properties": {
+        "id": "unique-id",
+        "type": "Fine Ware",
+        "period": "Classical",
+        "description": "Description of the artifact",
+        "square": "Grid reference",
+        ...other properties
+      }
+    }
+  ]
+}
+```
+
+## API Endpoints
+
+### GET /api/health
+Health check endpoint
+
+### GET /api/data/layers
+Get all available data layers
+
+### GET /api/data/layer/:layerId
+Get GeoJSON data for a specific layer
+
+### POST /api/data/filter
+Filter layer data
+```json
+{
+  "layerId": "pottery",
+  "filters": {
+    "period": "Roman",
+    "type": "Storage"
+  }
+}
+```
+
+### GET /api/data/feature/:layerId/:featureId
+Get details for a specific feature
+
+## Configuration
+
+### Backend Configuration
+
+Create a `.env` file in the `backend` directory (copy from `.env.example`):
+
+```env
+PORT=5000
+NODE_ENV=development
+CORS_ORIGIN=http://localhost:3000
+```
+
+### Frontend Configuration
+
+The frontend proxies API requests to the backend via the `proxy` field in `frontend/package.json`.
+
+For production, set the API URL:
+```bash
+REACT_APP_API_URL=https://your-api-domain.com/api
+```
+
+## Customization
+
+### Adding New Data Layers
+
+1. Add GeoJSON file to `backend/public/data/`
+2. The system will auto-detect it
+3. Optionally customize colors in `MapView.js`:
+
+```javascript
+const colors = {
+  pottery: '#ef4444',
+  architecture: '#3b82f6',
+  coins: '#f59e0b',
+  'your-new-layer': '#your-color'
+};
+```
+
+### Styling Map Features
+
+Edit the `getLayerStyle` function in `frontend/src/components/MapView.js` to customize how different geometry types are displayed.
+
+### Filtering Options
+
+Filters are automatically generated from the unique values in your GeoJSON properties. The system scans all features and extracts unique values for each property.
+
+## Deployment
+
+### Backend Deployment
+
+Deploy to any Node.js hosting service:
+- Heroku
+- DigitalOcean
+- AWS Elastic Beanstalk
+- Google Cloud Platform
+
+### Frontend Deployment
+
+Build and deploy to static hosting:
+- Netlify
+- Vercel
+- GitHub Pages
+- AWS S3 + CloudFront
+
+Build command:
+```bash
+cd frontend && npm run build
+```
+
+## Development
+
+### Adding New Features
+
+1. Backend: Add routes in `backend/src/routes/`, controllers in `controllers/`, and logic in `services/`
+2. Frontend: Add components in `frontend/src/components/` and styles in `styles/`
+
+### Code Style
+
+- Use ES6+ features
+- Follow React best practices
+- Keep components modular and reusable
+
+## Troubleshooting
+
+### Port Already in Use
+
+If port 5000 or 3000 is in use, change the port:
+- Backend: Update `PORT` in `backend/.env`
+- Frontend: Set `PORT` environment variable before starting
+
+### CORS Issues
+
+Ensure `CORS_ORIGIN` in backend `.env` matches your frontend URL.
+
+### Data Not Loading
+
+1. Check that GeoJSON files are in `backend/public/data/`
+2. Verify GeoJSON format is valid
+3. Check browser console for errors
+4. Verify backend API is running
+
+## License
+
+MIT
+
+## Credits
+
+Archaeological data from the Sikyon Survey Project:
+- Data Source: https://zenodo.org/records/1054450
+- License: Creative Commons Attribution Share Alike 4.0 International
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## Contact
+
+For questions about the Sikyon Survey Project data, refer to the Zenodo record.
