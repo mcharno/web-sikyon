@@ -116,54 +116,69 @@ The Sikyon Survey Project data is available at: https://zenodo.org/records/10544
 
 The dataset includes ESRI Shapefiles in the GIS folder. You'll need to convert these to GeoJSON format.
 
-#### Option A: Using GDAL (Recommended)
+#### Option A: Automated Batch Conversion (Recommended)
 
-Install GDAL (if not already installed):
+Use our automated script to convert all shapefiles at once:
+
 ```bash
-# macOS
+# Install GDAL first (if not already installed)
+# macOS:
 brew install gdal
 
-# Ubuntu/Debian
+# Ubuntu/Debian:
 sudo apt-get install gdal-bin
 
-# Windows
-# Download from https://gdal.org/
+# Run the batch conversion script
+./scripts/convert-all-shapefiles.sh ~/path/to/sikyon-data/GIS ./backend/public/data
 ```
 
-Convert shapefiles to GeoJSON:
+This script will:
+- Automatically find all `.shp` files
+- Convert them to GeoJSON
+- Save directly to the backend data folder
+- Show progress and feature counts
+
+See [DATA_LOADING_GUIDE.md](DATA_LOADING_GUIDE.md) for detailed instructions.
+
+#### Option B: Manual GDAL Conversion
+
+Convert individual files:
 ```bash
 ogr2ogr -f GeoJSON output.geojson input.shp
 ```
 
-#### Option B: Using Online Tools
+#### Option C: Using Online Tools
 
 - Visit https://mapshaper.org/
 - Upload your .shp, .shx, .dbf files
 - Export as GeoJSON
 
-#### Option C: Using Node.js
+#### Option D: Using Node.js
 
-You can use the `shpjs` library (already included in backend dependencies):
+Use the included Node.js script for individual files:
 
-```javascript
-const shp = require('shpjs');
-const fs = require('fs');
-
-// Read shapefile buffer
-const buffer = fs.readFileSync('path/to/shapefile.shp');
-
-// Convert to GeoJSON
-shp(buffer).then(geojson => {
-  fs.writeFileSync('output.geojson', JSON.stringify(geojson));
-});
+```bash
+cd backend
+node scripts/convert-shapefile.js ../path/to/input.shp public/data/output.geojson
 ```
 
 ### Step 3: Load Data into Application
 
-1. Place your converted GeoJSON files in `backend/public/data/`
-2. Name them according to their content (e.g., `pottery.geojson`, `architecture.geojson`, `coins.geojson`)
+If you used the automated script (Option A), your files are already in place! Just restart the server:
+
+```bash
+# Restart both servers
+npm run dev
+
+# Or just the backend
+npm run server:dev
+```
+
+If you converted files manually:
+1. Place your GeoJSON files in `backend/public/data/`
+2. Optionally rename them for better display (e.g., `pottery.geojson`, `architecture.geojson`)
 3. The backend will automatically detect and serve these files
-4. Restart the backend server to load the new data
+4. Restart the backend server
 
 ### Expected Data Structure
 
