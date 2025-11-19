@@ -45,21 +45,23 @@ const Sidebar = ({ layers, onLayerToggle, onFilterChange, isOpen }) => {
                     {layer.featureCount > 0 ? layer.featureCount : '...'}
                   </span>
                 </label>
-                <button
-                  className={`filter-button ${selectedLayer === layer.id ? 'active' : ''}`}
-                  onClick={() => setSelectedLayer(layer.id)}
-                  title="Filter this layer"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                  </svg>
-                </button>
+                {layer.allowFiltering && (
+                  <button
+                    className={`filter-button ${selectedLayer === layer.id ? 'active' : ''}`}
+                    onClick={() => setSelectedLayer(layer.id)}
+                    title="Filter this layer"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                  </button>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {currentLayer && (
+        {currentLayer && currentLayer.allowFiltering && (
           <div className="sidebar-section">
             <div className="section-header">
               <h2 className="section-title">Filter: {currentLayer.name}</h2>
@@ -95,6 +97,17 @@ const Sidebar = ({ layers, onLayerToggle, onFilterChange, isOpen }) => {
             ) : (
               <p className="no-filters">No filters available for this layer</p>
             )}
+          </div>
+        )}
+
+        {currentLayer && !currentLayer.allowFiltering && (
+          <div className="sidebar-section">
+            <div className="section-header">
+              <h2 className="section-title">{currentLayer.name}</h2>
+            </div>
+            <p className="no-filters">
+              {currentLayer.description || 'This layer does not support filtering.'}
+            </p>
           </div>
         )}
 

@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const shp = require('shpjs');
 const { transformGeoJSON } = require('./coordinateTransform.service');
+const layerConfig = require('../config/layerConfig');
 
 const DATA_DIR = path.join(__dirname, '../../public/data');
 
@@ -32,6 +33,12 @@ async function getAvailableLayers() {
     for (const file of files) {
       if (file.endsWith('.geojson')) {
         const layerId = file.replace('.geojson', '');
+
+        // Skip excluded layers
+        if (layerConfig.excludedLayers.includes(layerId)) {
+          continue;
+        }
+
         const filePath = path.join(DATA_DIR, file);
         const content = await fs.readFile(filePath, 'utf-8');
         const geojson = JSON.parse(content);
@@ -39,20 +46,37 @@ async function getAvailableLayers() {
         // Analyze the layer to determine categories
         const categories = extractCategories(geojson);
 
-        // Only load tracts, squares, and cliffs by default
-        const defaultVisibleLayers = ['tracts', 'squares', 'cliffs', 'survey-tracts'];
-        const isVisible = defaultVisibleLayers.some(name => layerId.toLowerCase().includes(name));
+        // Get settings from config or use defaults
+        const settings = layerConfig.layerSettings[layerId] || {};
+        const isVisible = settings.defaultVisible !== undefined
+          ? settings.defaultVisible
+          : false;
+        const allowFiltering = !layerConfig.noFilterLayers.includes(layerId);
 
         layers.push({
           id: layerId,
-          name: formatLayerName(layerId),
+          name: settings.name || formatLayerName(layerId),
           type: geojson.features[0]?.geometry?.type || 'Unknown',
           featureCount: geojson.features.length,
           categories: categories,
-          visible: isVisible
+          visible: isVisible,
+          allowFiltering: allowFiltering,
+          description: settings.description || ''
         });
       }
     }
+
+    // Sort layers according to layerOrder configuration
+    layers.sort((a, b) => {
+      const orderA = layerConfig.layerOrder.indexOf(a.id);
+      const orderB = layerConfig.layerOrder.indexOf(b.id);
+
+      // If layer not in order config, put it at the end
+      const indexA = orderA === -1 ? 999 : orderA;
+      const indexB = orderB === -1 ? 999 : orderB;
+
+      return indexA - indexB;
+    });
 
     layersCache = layers.length > 0 ? layers : getSampleLayers();
     return layersCache;
@@ -179,7 +203,7 @@ function formatLayerName(layerId) {
  * Get sample layers for demonstration (when no real data is loaded)
  */
 function getSampleLayers() {
-  return [
+  const sampleLayers = [
     {
       id: 'pottery',
       name: 'Pottery Finds',
@@ -189,7 +213,9 @@ function getSampleLayers() {
         period: ['Archaic', 'Classical', 'Hellenistic', 'Roman', 'Medieval'],
         type: ['Storage', 'Cooking', 'Fine Ware', 'Coarse Ware']
       },
-      visible: false
+      visible: false,
+      allowFiltering: true,
+      description: 'Ceramic artifacts and sherds'
     },
     {
       id: 'architecture',
@@ -200,7 +226,9 @@ function getSampleLayers() {
         period: ['Archaic', 'Classical', 'Hellenistic', 'Roman', 'Medieval'],
         type: ['Building', 'Wall', 'Foundation', 'Road']
       },
-      visible: false
+      visible: false,
+      allowFiltering: true,
+      description: 'Buildings, walls, and structures'
     },
     {
       id: 'coins',
@@ -210,7 +238,9 @@ function getSampleLayers() {
       categories: {
         period: ['Archaic', 'Classical', 'Hellenistic', 'Roman', 'Medieval', 'Byzantine']
       },
-      visible: false
+      visible: false,
+      allowFiltering: true,
+      description: 'Numismatic finds'
     },
     {
       id: 'survey-tracts',
@@ -218,7 +248,9 @@ function getSampleLayers() {
       type: 'Polygon',
       featureCount: 0,
       categories: {},
-      visible: true
+      visible: true,
+      allowFiltering: false,
+      description: 'Survey area boundaries'
     },
     {
       id: 'squares',
@@ -226,7 +258,9 @@ function getSampleLayers() {
       type: 'Polygon',
       featureCount: 0,
       categories: {},
-      visible: true
+      visible: true,
+      allowFiltering: false,
+      description: 'Grid square boundaries'
     },
     {
       id: 'cliffs',
@@ -234,9 +268,22 @@ function getSampleLayers() {
       type: 'LineString',
       featureCount: 0,
       categories: {},
-      visible: true
+      visible: true,
+      allowFiltering: false,
+      description: 'Cliff edges and escarpments'
     }
   ];
+
+  // Sort according to layerOrder
+  sampleLayers.sort((a, b) => {
+    const orderA = layerConfig.layerOrder.indexOf(a.id);
+    const orderB = layerConfig.layerOrder.indexOf(b.id);
+    const indexA = orderA === -1 ? 999 : orderA;
+    const indexB = orderB === -1 ? 999 : orderB;
+    return indexA - indexB;
+  });
+
+  return sampleLayers;
 }
 
 /**
