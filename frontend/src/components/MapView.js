@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import Map, { Source, Layer } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { fetchLayerData, filterData } from '../services/api';
@@ -16,15 +16,7 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
   const [layersData, setLayersData] = useState({});
   const [hoveredFeature, setHoveredFeature] = useState(null);
 
-  useEffect(() => {
-    loadAllLayers();
-  }, [layers]);
-
-  useEffect(() => {
-    applyFilters();
-  }, [filters]);
-
-  const loadAllLayers = async () => {
+  const loadAllLayers = useCallback(async () => {
     const data = {};
     for (const layer of layers) {
       if (layer.visible) {
@@ -37,9 +29,9 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
       }
     }
     setLayersData(data);
-  };
+  }, [layers]);
 
-  const applyFilters = async () => {
+  const applyFilters = useCallback(async () => {
     if (Object.keys(filters).length === 0) {
       loadAllLayers();
       return;
@@ -57,7 +49,15 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
       }
     }
     setLayersData(data);
-  };
+  }, [filters, layers, loadAllLayers]);
+
+  useEffect(() => {
+    loadAllLayers();
+  }, [loadAllLayers]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleMapClick = (event) => {
     const features = event.features;
