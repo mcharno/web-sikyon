@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "dev:clean": "npm run kill:backend && npm run dev",
     "server:dev": "cd backend && npm run dev",
     "client:dev": "cd frontend && npm run dev",
     "server": "cd backend && npm start",
     "client": "cd frontend && npm start",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "build": "cd frontend && npm run build"
+    "build": "cd frontend && npm run build",
+    "kill:backend": "kill -9 $(lsof -ti:5000) 2>/dev/null || echo 'Backend port 5000 is free'",
+    "kill:frontend": "kill -9 $(lsof -ti:3000) 2>/dev/null || echo 'Frontend port 3000 is free'",
+    "kill:all": "npm run kill:backend && npm run kill:frontend"
   },
   "keywords": ["sikyon", "archaeology", "gis", "mapping"],
   "author": "",
