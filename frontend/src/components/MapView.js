@@ -17,17 +17,21 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
   const [hoveredFeature, setHoveredFeature] = useState(null);
 
   const loadAllLayers = useCallback(async () => {
+    console.log('Loading layers:', layers.filter(l => l.visible).map(l => l.id));
     const data = {};
     for (const layer of layers) {
       if (layer.visible) {
         try {
           const geojson = await fetchLayerData(layer.id);
+          console.log(`Loaded ${layer.id}:`, geojson?.features?.length, 'features');
+          console.log(`Sample feature from ${layer.id}:`, geojson?.features?.[0]);
           data[layer.id] = geojson;
         } catch (error) {
           console.error(`Error loading layer ${layer.id}:`, error);
         }
       }
     }
+    console.log('All layers loaded:', Object.keys(data));
     setLayersData(data);
   }, [layers]);
 
@@ -58,6 +62,13 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
+
+  useEffect(() => {
+    console.log('layersData updated:', Object.keys(layersData));
+    Object.entries(layersData).forEach(([id, data]) => {
+      console.log(`  ${id}: ${data?.features?.length || 0} features`);
+    });
+  }, [layersData]);
 
   const handleMapClick = (event) => {
     const features = event.features;
@@ -161,11 +172,13 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
       >
         {Object.entries(layersData).map(([layerId, geojson]) => {
           if (!geojson || !geojson.features || geojson.features.length === 0) {
+            console.log(`Skipping ${layerId}: no features`);
             return null;
           }
 
           const layer = layers.find(l => l.id === layerId);
           if (!layer || !layer.visible) {
+            console.log(`Skipping ${layerId}: layer not visible`);
             return null;
           }
 
@@ -173,8 +186,12 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
           const layerStyle = getLayerStyle(layerId, geometryType);
 
           if (!layerStyle) {
+            console.log(`Skipping ${layerId}: no layer style for ${geometryType}`);
             return null;
           }
+
+          console.log(`Rendering layer ${layerId}: ${geometryType}, ${geojson.features.length} features`);
+          console.log(`First feature bounds:`, geojson.features[0]?.geometry?.coordinates);
 
           return (
             <Source
