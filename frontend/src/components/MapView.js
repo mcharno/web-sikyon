@@ -88,7 +88,9 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
       pottery: '#ef4444',
       architecture: '#3b82f6',
       coins: '#f59e0b',
-      'survey-tracts': '#10b981'
+      'survey-tracts': '#10b981',
+      'squares': '#8b5cf6',
+      'cliffs': '#ec4899'
     };
 
     const color = colors[layerId] || '#6366f1';
@@ -211,7 +213,9 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
             pottery: '#ef4444',
             architecture: '#3b82f6',
             coins: '#f59e0b',
-            'survey-tracts': '#10b981'
+            'survey-tracts': '#10b981',
+            'squares': '#8b5cf6',
+            'cliffs': '#ec4899'
           };
           const color = colors[layer.id] || '#6366f1';
 

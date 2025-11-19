@@ -38,13 +38,17 @@ async function getAvailableLayers() {
         // Analyze the layer to determine categories
         const categories = extractCategories(geojson);
 
+        // Only load tracts, squares, and cliffs by default
+        const defaultVisibleLayers = ['tracts', 'squares', 'cliffs', 'survey-tracts'];
+        const isVisible = defaultVisibleLayers.some(name => layerId.toLowerCase().includes(name));
+
         layers.push({
           id: layerId,
           name: formatLayerName(layerId),
           type: geojson.features[0]?.geometry?.type || 'Unknown',
           featureCount: geojson.features.length,
           categories: categories,
-          visible: true
+          visible: isVisible
         });
       }
     }
@@ -181,7 +185,7 @@ function getSampleLayers() {
         period: ['Archaic', 'Classical', 'Hellenistic', 'Roman', 'Medieval'],
         type: ['Storage', 'Cooking', 'Fine Ware', 'Coarse Ware']
       },
-      visible: true
+      visible: false
     },
     {
       id: 'architecture',
@@ -192,7 +196,7 @@ function getSampleLayers() {
         period: ['Archaic', 'Classical', 'Hellenistic', 'Roman', 'Medieval'],
         type: ['Building', 'Wall', 'Foundation', 'Road']
       },
-      visible: true
+      visible: false
     },
     {
       id: 'coins',
@@ -202,12 +206,28 @@ function getSampleLayers() {
       categories: {
         period: ['Archaic', 'Classical', 'Hellenistic', 'Roman', 'Medieval', 'Byzantine']
       },
-      visible: true
+      visible: false
     },
     {
       id: 'survey-tracts',
       name: 'Survey Tracts',
       type: 'Polygon',
+      featureCount: 0,
+      categories: {},
+      visible: true
+    },
+    {
+      id: 'squares',
+      name: 'Survey Squares',
+      type: 'Polygon',
+      featureCount: 0,
+      categories: {},
+      visible: true
+    },
+    {
+      id: 'cliffs',
+      name: 'Cliffs',
+      type: 'LineString',
       featureCount: 0,
       categories: {},
       visible: true
@@ -292,6 +312,100 @@ function getSampleGeoJSON(layerId) {
             period: 'Roman',
             description: 'Bronze coin, Emperor Hadrian',
             square: 'D-20'
+          }
+        }
+      ]
+    };
+  } else if (layerId === 'survey-tracts') {
+    return {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          id: 'tract-001',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [sikyonCenter[0] - 0.01, sikyonCenter[1] - 0.01],
+              [sikyonCenter[0] + 0.01, sikyonCenter[1] - 0.01],
+              [sikyonCenter[0] + 0.01, sikyonCenter[1] + 0.01],
+              [sikyonCenter[0] - 0.01, sikyonCenter[1] + 0.01],
+              [sikyonCenter[0] - 0.01, sikyonCenter[1] - 0.01]
+            ]]
+          },
+          properties: {
+            id: 'tract-001',
+            name: 'Tract 1',
+            description: 'Survey tract covering central area'
+          }
+        }
+      ]
+    };
+  } else if (layerId === 'squares') {
+    return {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          id: 'square-001',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [sikyonCenter[0] - 0.005, sikyonCenter[1] - 0.005],
+              [sikyonCenter[0], sikyonCenter[1] - 0.005],
+              [sikyonCenter[0], sikyonCenter[1]],
+              [sikyonCenter[0] - 0.005, sikyonCenter[1]],
+              [sikyonCenter[0] - 0.005, sikyonCenter[1] - 0.005]
+            ]]
+          },
+          properties: {
+            id: 'square-001',
+            name: 'Square A-1',
+            description: 'Survey square A-1'
+          }
+        },
+        {
+          type: 'Feature',
+          id: 'square-002',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [sikyonCenter[0], sikyonCenter[1]],
+              [sikyonCenter[0] + 0.005, sikyonCenter[1]],
+              [sikyonCenter[0] + 0.005, sikyonCenter[1] + 0.005],
+              [sikyonCenter[0], sikyonCenter[1] + 0.005],
+              [sikyonCenter[0], sikyonCenter[1]]
+            ]]
+          },
+          properties: {
+            id: 'square-002',
+            name: 'Square B-2',
+            description: 'Survey square B-2'
+          }
+        }
+      ]
+    };
+  } else if (layerId === 'cliffs') {
+    return {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          id: 'cliff-001',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [sikyonCenter[0] - 0.008, sikyonCenter[1] + 0.008],
+              [sikyonCenter[0] - 0.006, sikyonCenter[1] + 0.01],
+              [sikyonCenter[0] - 0.003, sikyonCenter[1] + 0.009],
+              [sikyonCenter[0], sikyonCenter[1] + 0.011],
+              [sikyonCenter[0] + 0.003, sikyonCenter[1] + 0.01]
+            ]
+          },
+          properties: {
+            id: 'cliff-001',
+            name: 'Northern Cliff Edge',
+            description: 'Cliff edge along northern boundary'
           }
         }
       ]
