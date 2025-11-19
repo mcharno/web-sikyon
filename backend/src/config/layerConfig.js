@@ -78,17 +78,17 @@ const layerConfig = {
       description: 'Interpreted geophysical anomalies'
     },
     'architecture': {
-      defaultVisible: false,
+      defaultVisible: true,
       name: 'Architectural Features',
       description: 'Buildings, walls, and structures'
     },
     'pottery': {
-      defaultVisible: false,
+      defaultVisible: true,
       name: 'Pottery Finds',
       description: 'Ceramic artifacts and sherds'
     },
     'coins': {
-      defaultVisible: false,
+      defaultVisible: true,
       name: 'Coin Finds',
       description: 'Numismatic finds'
     }

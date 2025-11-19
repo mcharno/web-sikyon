@@ -10,7 +10,7 @@ const SIKYON_CENTER = {
   zoom: 14
 };
 
-const MapView = ({ layers, filters, onFeatureClick }) => {
+const MapView = ({ layers, filters, onFeatureClick, queryResults }) => {
   const mapRef = useRef();
   const [viewState, setViewState] = useState(SIKYON_CENTER);
   const [layersData, setLayersData] = useState({});
@@ -204,6 +204,27 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
             </Source>
           );
         })}
+
+        {queryResults && queryResults.features && queryResults.features.length > 0 && (
+          <Source
+            key="query-results"
+            id="query-results"
+            type="geojson"
+            data={queryResults}
+          >
+            <Layer
+              id="query-results-circles"
+              type="circle"
+              paint={{
+                'circle-radius': 8,
+                'circle-color': '#10b981',
+                'circle-opacity': 0.9,
+                'circle-stroke-color': '#ffffff',
+                'circle-stroke-width': 3
+              }}
+            />
+          </Source>
+        )}
       </Map>
 
       {hoveredFeature && (
