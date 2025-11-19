@@ -8,26 +8,41 @@
 const layerConfig = {
   // Layers to exclude entirely (won't appear in the app)
   excludedLayers: [
-    // Add layer IDs here that you want to completely hide
-    // Example: 'temporary-data', 'test-layer'
+    'iso-2m',
+    'iso_2m',
+    'ISO-2m',
+    'ISO_2m'
+    // Adding multiple variations to catch different naming conventions
   ],
 
   // Layer display order (bottom to top)
   // Layers earlier in this array will be rendered underneath later ones
   layerOrder: [
-    'survey-tracts',  // Base layer - survey boundaries
-    'squares',        // Grid squares on top of tracts
-    'cliffs',         // Natural features
-    'architecture',   // Built features
-    'pottery',        // Artifact finds
-    'coins'           // Small finds on top
+    'survey-tracts',                    // Base layer - survey boundaries
+    'squares',                          // Grid squares on top of tracts
+    'cliffs',                           // Natural features
+    'geophysics-interpretation',        // Geophysics data
+    'architectural-features-line',      // Linear architecture
+    'architectural-features-point',     // Point architecture
+    'architecture',                     // General built features
+    'pottery',                          // Artifact finds
+    'coins'                            // Small finds on top
   ],
 
-  // Layers that should not have filtering enabled
+  // Layers that CANNOT be filtered (all except the three specified)
+  // Only these layers will have filtering enabled:
+  //   - Architectural Features Line
+  //   - Architectural Features Point
+  //   - Geophysics Interpretation
   noFilterLayers: [
-    'survey-tracts',  // Just boundaries, no meaningful attributes to filter
-    'squares',        // Just grid references
-    'cliffs'          // Geographic features, no temporal/categorical data
+    'survey-tracts',
+    'squares',
+    'cliffs',
+    'pottery',
+    'coins',
+    'architecture',
+    // Add any other layers here that should NOT have filtering
+    // All variations to catch different naming
   ],
 
   // Layer display settings
@@ -46,6 +61,21 @@ const layerConfig = {
       defaultVisible: true,
       name: 'Cliffs',
       description: 'Cliff edges and escarpments'
+    },
+    'architectural-features-line': {
+      defaultVisible: false,
+      name: 'Architectural Features Line',
+      description: 'Linear architectural features (walls, roads, etc.)'
+    },
+    'architectural-features-point': {
+      defaultVisible: false,
+      name: 'Architectural Features Point',
+      description: 'Point architectural features'
+    },
+    'geophysics-interpretation': {
+      defaultVisible: false,
+      name: 'Geophysics Interpretation',
+      description: 'Interpreted geophysical anomalies'
     },
     'architecture': {
       defaultVisible: false,
