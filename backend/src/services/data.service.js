@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const shp = require('shpjs');
+const { transformGeoJSON } = require('./coordinateTransform.service');
 
 const DATA_DIR = path.join(__dirname, '../../public/data');
 
@@ -73,15 +74,18 @@ async function getLayerGeoJSON(layerId) {
   try {
     const filePath = path.join(DATA_DIR, `${layerId}.geojson`);
     const content = await fs.readFile(filePath, 'utf-8');
-    const geojson = JSON.parse(content);
+    let geojson = JSON.parse(content);
 
-    // Cache the data
+    // Transform coordinates from Greek Grid to WGS84
+    geojson = transformGeoJSON(geojson);
+
+    // Cache the transformed data
     geoJSONCache[layerId] = geojson;
 
     return geojson;
   } catch (error) {
     console.error(`Error loading layer ${layerId}:`, error);
-    // Return sample data for demonstration
+    // Return sample data for demonstration (already in WGS84)
     return getSampleGeoJSON(layerId);
   }
 }
