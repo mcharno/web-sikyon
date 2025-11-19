@@ -19,6 +19,11 @@ Get the Sikyon web app running in under 5 minutes!
    npm run dev
    ```
 
+   **Getting "port already in use" error?** Use this instead:
+   ```bash
+   npm run dev:clean
+   ```
+
 3. **Open your browser:**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
@@ -49,17 +54,26 @@ That's it! The app will run with sample archaeological data.
 
 ## Troubleshooting
 
-**Port already in use?**
-- Change backend port in `backend/.env`
-- Change frontend port: `PORT=3001 npm run client:dev`
+**Port already in use? (Most common issue)**
+```bash
+# Quick fix - kills port 5000 and starts fresh
+npm run dev:clean
+
+# Or manually kill the process
+kill -9 $(lsof -ti:5000)
+```
+
+**On macOS:** Disable AirPlay Receiver if port 5000 is always busy:
+- System Preferences → Sharing → Uncheck "AirPlay Receiver"
 
 **CORS errors?**
 - Ensure backend is running on port 5000
 - Check `backend/.env` CORS_ORIGIN setting
 
 **Need help?**
+- See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions
 - See full README.md for detailed documentation
-- Check browser console for errors
+- Check browser console for errors (F12)
 - Verify both servers are running
 
 ## Architecture Overview

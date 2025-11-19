@@ -83,6 +83,14 @@ npm run dev
 - Backend will run on `http://localhost:5000`
 - Frontend will run on `http://localhost:3000`
 
+**Port Already in Use?** Run this instead:
+```bash
+npm run dev:clean
+```
+This will automatically kill any process using port 5000 and start fresh.
+
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more solutions.
+
 #### Run Separately
 
 Backend only:
@@ -317,11 +325,36 @@ cd frontend && npm run build
 
 ## Troubleshooting
 
-### Port Already in Use
+### Port Already in Use (EADDRINUSE Error)
 
-If port 5000 or 3000 is in use, change the port:
-- Backend: Update `PORT` in `backend/.env`
-- Frontend: Set `PORT` environment variable before starting
+**Quick fix:**
+```bash
+# Kill any process using port 5000 and start clean
+npm run dev:clean
+```
+
+**Or manually:**
+```bash
+# Find and kill the process
+kill -9 $(lsof -ti:5000)
+
+# Then start normally
+npm run dev
+```
+
+**Common cause on macOS:** AirPlay Receiver uses port 5000
+- System Preferences → Sharing → Disable "AirPlay Receiver"
+
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions.
+
+### Available Helper Scripts
+
+```bash
+npm run dev:clean      # Kill port 5000 and start dev servers
+npm run kill:backend   # Kill process on port 5000
+npm run kill:frontend  # Kill process on port 3000
+npm run kill:all       # Kill both ports
+```
 
 ### CORS Issues
 
@@ -331,8 +364,9 @@ Ensure `CORS_ORIGIN` in backend `.env` matches your frontend URL.
 
 1. Check that GeoJSON files are in `backend/public/data/`
 2. Verify GeoJSON format is valid
-3. Check browser console for errors
-4. Verify backend API is running
+3. Check browser console for errors (F12)
+4. Verify backend API is running on port 5000
+5. Test the API: `curl http://localhost:5000/api/health`
 
 ## License
 
