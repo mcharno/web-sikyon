@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import Map, { Source, Layer } from 'react-map-gl';
+import Map, { Source, Layer } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { fetchLayerData, filterData } from '../services/api';
 import '../styles/MapView.css';
@@ -151,12 +151,11 @@ const MapView = ({ layers, filters, onFeatureClick }) => {
         ref={mapRef}
         {...viewState}
         onMove={evt => setViewState(evt.viewState)}
-        mapLib={import('maplibre-gl')}
         style={{ width: '100%', height: '100%' }}
         mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
         onClick={handleMapClick}
         onMouseMove={handleMouseMove}
-        interactiveLayerIds={Object.keys(layersData).map(id => `${id}-circles`, `${id}-polygons`, `${id}-lines`)}
+        interactiveLayerIds={Object.keys(layersData).flatMap(id => [`${id}-circles`, `${id}-polygons`, `${id}-lines`])}
       >
         {Object.entries(layersData).map(([layerId, geojson]) => {
           if (!geojson || !geojson.features || geojson.features.length === 0) {
