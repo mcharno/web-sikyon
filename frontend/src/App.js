@@ -4,6 +4,7 @@ import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 import MapPage from './pages/MapPage';
 import DatabaseView from './pages/DatabaseView';
+import BibliographyPage from './pages/BibliographyPage';
 import './styles/App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/database" element={<DatabaseView />} />
+          <Route path="/bibliography" element={<BibliographyPage />} />
         </Routes>
       </div>
     </Router>

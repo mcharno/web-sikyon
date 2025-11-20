@@ -16,13 +16,15 @@
 }
 
 .header-title {
-  flex: 0;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .title-link {
   text-decoration: none;
   color: inherit;
   transition: opacity 0.2s;
+  white-space: nowrap;
 }
 
 .title-link:hover {
@@ -35,6 +37,7 @@
   margin: 0;
   letter-spacing: -0.025em;
   color: #111827;
+  white-space: nowrap;
 }
 
 .header-nav {
