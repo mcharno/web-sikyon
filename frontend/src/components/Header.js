@@ -22,28 +22,28 @@ const Header = () => {
             Home
           </Link>
           <Link
-            to="/map"
-            className={`nav-link ${location.pathname === '/map' ? 'active' : ''}`}
-          >
-            Map
-          </Link>
-          <Link
             to="/database"
             className={`nav-link ${location.pathname === '/database' ? 'active' : ''}`}
           >
             Query
           </Link>
           <Link
-            to="/bibliography"
-            className={`nav-link ${location.pathname === '/bibliography' ? 'active' : ''}`}
+            to="/map"
+            className={`nav-link ${location.pathname === '/map' ? 'active' : ''}`}
           >
-            Bibliography
+            Map
           </Link>
           <Link
             to="/data"
             className={`nav-link ${location.pathname === '/data' ? 'active' : ''}`}
           >
             Data
+          </Link>
+          <Link
+            to="/bibliography"
+            className={`nav-link ${location.pathname === '/bibliography' ? 'active' : ''}`}
+          >
+            Bibliography
           </Link>
         </nav>
       </div>
