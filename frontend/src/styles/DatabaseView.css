@@ -1,5 +1,7 @@
 .database-view {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
   background: #f9fafb;
 }
 
@@ -27,8 +29,9 @@
 
 .database-container {
   display: flex;
-  height: calc(100vh - 180px);
+  flex: 1;
   width: 100%;
+  overflow: hidden;
 }
 
 .database-sidebar {
