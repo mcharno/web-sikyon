@@ -15,9 +15,6 @@
   margin: 0 0 0.5rem 0;
   color: #111827;
   letter-spacing: -0.025em;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .database-header p {
@@ -25,17 +22,13 @@
   font-weight: 400;
   color: #6b7280;
   margin: 0;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
   line-height: 1.5;
 }
 
 .database-container {
   display: flex;
   height: calc(100vh - 180px);
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .database-sidebar {
@@ -308,15 +301,16 @@
   background: #667eea;
   color: white;
   border: none;
-  border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  border-bottom: 2px solid transparent;
 }
 
 .view-btn:hover {
   background: #5568d3;
+  border-bottom-color: #4c51bf;
 }
 
 .detail-view {
@@ -344,14 +338,15 @@
   background: #e5e7eb;
   color: #4b5563;
   border: none;
-  border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  border-bottom: 2px solid transparent;
 }
 
 .close-detail-btn:hover {
   background: #d1d5db;
+  border-bottom-color: #9ca3af;
 }
 
 .detail-content {
@@ -479,6 +474,62 @@
 .detail-link:hover {
   color: #5568d3;
   text-decoration: underline;
+}
+
+.detail-images-section,
+.detail-map-section {
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-images-section h4,
+.detail-map-section h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.detail-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.detail-image-placeholder {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.detail-image-placeholder svg {
+  margin-bottom: 1rem;
+}
+
+.detail-map-placeholder {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.detail-map-placeholder svg {
+  margin-bottom: 1rem;
 }
 
 /* Image Lightbox */

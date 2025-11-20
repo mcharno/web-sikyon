@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import MapPage from './pages/MapPage';
 import DatabaseView from './pages/DatabaseView';
 import BibliographyPage from './pages/BibliographyPage';
+import DataPage from './pages/DataPage';
 import './styles/App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/map" element={<MapPage />} />
           <Route path="/database" element={<DatabaseView />} />
           <Route path="/bibliography" element={<BibliographyPage />} />
+          <Route path="/data" element={<DataPage />} />
         </Routes>
       </div>
     </Router>
