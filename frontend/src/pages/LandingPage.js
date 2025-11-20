@@ -106,6 +106,43 @@ const LandingPage = () => {
           </div>
         </section>
 
+        <section className="landing-section">
+          <h2>Related Websites</h2>
+          <p>
+            Learn more about the Sikyon Survey Project and related archaeological research
+            through these external resources:
+          </p>
+          <div className="external-links-grid">
+            <a
+              href="https://www.sikyon.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="external-link-item"
+            >
+              <h4>Sikyon Survey Project</h4>
+              <p>Official project website with updates and research results</p>
+            </a>
+            <a
+              href="https://example.org/institution"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="external-link-item"
+            >
+              <h4>Sponsoring Institution</h4>
+              <p>Learn about the research institution behind the survey</p>
+            </a>
+            <a
+              href="https://example.org/publications"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="external-link-item"
+            >
+              <h4>Research Publications</h4>
+              <p>Access scholarly articles and publications from the project</p>
+            </a>
+          </div>
+        </section>
+
         <section className="landing-section credits">
           <h2>Credits</h2>
           <p>

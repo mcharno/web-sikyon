@@ -33,6 +33,12 @@ const Header = () => {
           >
             Database
           </Link>
+          <Link
+            to="/bibliography"
+            className={`nav-link ${location.pathname === '/bibliography' ? 'active' : ''}`}
+          >
+            Bibliography
+          </Link>
           <a
             href="https://zenodo.org/records/1054450"
             target="_blank"

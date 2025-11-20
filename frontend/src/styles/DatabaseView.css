@@ -1,18 +1,18 @@
 .database-view {
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
   background: #f9fafb;
 }
 
 .database-header {
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
-  padding: 3rem 2rem;
+  padding: 2rem 2rem;
 }
 
 .database-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem 0;
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
   color: #111827;
   letter-spacing: -0.025em;
   max-width: 1200px;
@@ -21,18 +21,19 @@
 }
 
 .database-header p {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 400;
   color: #6b7280;
   margin: 0;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.5;
 }
 
 .database-container {
   display: flex;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 180px);
   max-width: 1400px;
   margin: 0 auto;
 }

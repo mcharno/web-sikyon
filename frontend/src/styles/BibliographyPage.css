@@ -1,0 +1,146 @@
+.bibliography-page {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.bibliography-hero {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 2rem 2rem;
+}
+
+.bibliography-hero h1 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+  color: #111827;
+}
+
+.bibliography-hero p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.bibliography-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.bibliography-section {
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.bibliography-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+.bibliography-section p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+.bibliography-section p:last-child {
+  margin-bottom: 0;
+}
+
+.publications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.publication-item {
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-left: 3px solid #667eea;
+  transition: all 0.15s ease;
+}
+
+.publication-item:hover {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-left-color: #5568d3;
+}
+
+.publication-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.publication-citation {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #111827;
+}
+
+.publication-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.doi-link {
+  font-size: 0.875rem;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.doi-link:hover {
+  color: #5568d3;
+  border-bottom-color: #5568d3;
+}
+
+.citation-box {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-left: 3px solid #667eea;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #111827;
+  font-family: 'Courier New', monospace;
+}
+
+.citation-box a {
+  color: #667eea;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.citation-box a:hover {
+  color: #5568d3;
+  border-bottom-color: #5568d3;
+}
+
+@media (max-width: 768px) {
+  .bibliography-container {
+    padding: 2rem 1rem;
+  }
+
+  .bibliography-section {
+    padding: 1.5rem;
+  }
+
+  .publication-item {
+    padding: 1rem;
+  }
+}
