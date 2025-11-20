@@ -31,7 +31,7 @@ const Header = () => {
             to="/database"
             className={`nav-link ${location.pathname === '/database' ? 'active' : ''}`}
           >
-            Database
+            Query
           </Link>
           <Link
             to="/bibliography"
@@ -39,14 +39,12 @@ const Header = () => {
           >
             Bibliography
           </Link>
-          <a
-            href="https://zenodo.org/records/1054450"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-link external"
+          <Link
+            to="/data"
+            className={`nav-link ${location.pathname === '/data' ? 'active' : ''}`}
           >
-            Data Source
-          </a>
+            Data
+          </Link>
         </nav>
       </div>
     </header>
