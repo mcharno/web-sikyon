@@ -11,7 +11,6 @@ const Header = () => {
         <div className="header-title">
           <Link to="/" className="title-link">
             <h1>Sikyon Survey Project</h1>
-            <p className="subtitle">Archaeological Data Visualization</p>
           </Link>
         </div>
 
