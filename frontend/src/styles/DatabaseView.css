@@ -1,31 +1,40 @@
 .database-view {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 60px);
   background: #f9fafb;
 }
 
 .database-header {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
-  color: white;
-  padding: 2rem;
-  text-align: center;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 3rem 2rem;
 }
 
 .database-header h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.75rem 0;
+  color: #111827;
+  letter-spacing: -0.025em;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .database-header p {
-  font-size: 1rem;
-  font-weight: 300;
-  opacity: 0.95;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: #6b7280;
   margin: 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .database-container {
   display: flex;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 250px);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .database-sidebar {
@@ -57,24 +66,26 @@
 
 .dataset-btn {
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
   background: white;
-  border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s;
-  color: #4b5563;
+  transition: all 0.15s ease;
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
 }
 
 .dataset-btn:hover {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.05);
+  color: #111827;
+  background: rgba(0, 0, 0, 0.02);
+  border-color: #e5e7eb;
 }
 
 .dataset-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   color: white;
-  border-color: transparent;
+  border-color: #667eea;
+  border-bottom-color: #5568d3;
 }
 
 .filters-section {
@@ -146,21 +157,20 @@
 
 .search-btn {
   width: 100%;
-  padding: 0.875rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.75rem;
+  background: #667eea;
   color: white;
   border: none;
-  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   margin-top: 1rem;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.15s ease;
+  border-bottom: 2px solid transparent;
 }
 
 .search-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  background: #5568d3;
+  border-bottom-color: #4c51bf;
 }
 
 .database-content {
@@ -219,37 +229,37 @@
 
 .export-btn,
 .map-btn {
-  padding: 0.625rem 1.25rem;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
   text-decoration: none;
   display: inline-block;
+  border-bottom: 2px solid transparent;
 }
 
 .export-btn {
   background: white;
   color: #667eea;
-  border: 2px solid #667eea;
+  border: 1px solid #667eea;
 }
 
 .export-btn:hover {
   background: #667eea;
   color: white;
+  border-bottom-color: #5568d3;
 }
 
 .map-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   color: white;
-  border: none;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  border: 1px solid #667eea;
 }
 
 .map-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: #5568d3;
+  border-bottom-color: #4c51bf;
 }
 
 .results-container {
