@@ -12,8 +12,7 @@
 }
 
 .hero-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  /* Content aligns left like other pages */
 }
 
 .hero-title {
