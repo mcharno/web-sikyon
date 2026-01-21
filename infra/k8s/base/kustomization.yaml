@@ -5,6 +5,7 @@ namespace: burnside
 
 resources:
   - namespace.yaml
+  - ghcr-sealed-secret.yaml
   - backend-deployment.yaml
   - backend-service.yaml
   - frontend-deployment.yaml
