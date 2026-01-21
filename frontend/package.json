@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.1",
-    "maplibre-gl": "^3.6.2",
-    "react-map-gl": "^7.1.7",
     "axios": "^1.6.2",
-    "react-csv": "^2.2.2"
+    "maplibre-gl": "^3.6.2",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-csv": "^2.2.2",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.1.7",
+    "react-router-dom": "^6.20.1"
   },
   "scripts": {
     "start": "PORT=3100 react-scripts start",
     "dev": "PORT=3100 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

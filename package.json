@@ -3,16 +3,24 @@
   "version": "1.0.0",
   "description": "Sikyon Archaeological Survey Data Visualization Web App",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "server:dev": "cd backend && npm run dev",
-    "client:dev": "cd frontend && npm run dev",
-    "server": "cd backend && npm start",
-    "client": "cd frontend && npm start",
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "build": "cd frontend && npm run build"
+    "dev": "concurrently \"yarn workspace sikyon-backend dev\" \"yarn workspace sikyon-frontend dev\"",
+    "start": "concurrently \"yarn workspace sikyon-backend start\" \"yarn workspace sikyon-frontend start\"",
+    "test": "yarn workspaces foreach -pt run test",
+    "build": "yarn workspace sikyon-frontend build",
+    "install:all": "yarn install"
   },
-  "keywords": ["sikyon", "archaeology", "gis", "mapping"],
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "keywords": [
+    "sikyon",
+    "archaeology",
+    "gis",
+    "mapping"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {

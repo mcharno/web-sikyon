@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sikyon-external
+  labels:
+    app: sikyon
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cloudflare-prod
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - ssp.charno.net
+    secretName: ssp-charno-net-tls
+  rules:
+  - host: ssp.charno.net
+    http:
+      paths:
+      # Backend API routes
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: sikyon-backend
+            port:
+              number: 3180
+      # Static data routes
+      - path: /data
+        pathType: Prefix
+        backend:
+          service:
+            name: sikyon-backend
+            port:
+              number: 3180
+      # Frontend routes (catch-all)
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sikyon-frontend
+            port:
+              number: 3100

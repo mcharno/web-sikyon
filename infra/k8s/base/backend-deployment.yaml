@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sikyon-backend
+  labels:
+    app: sikyon-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sikyon-backend
+  template:
+    metadata:
+      labels:
+        app: sikyon-backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: backend
+          image: ghcr.io/mcharno/sikyon-backend:latest
+          ports:
+            - containerPort: 3180
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3180"
+            - name: CORS_ORIGIN
+              value: "https://ssp.charno.net"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3180
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3180
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true

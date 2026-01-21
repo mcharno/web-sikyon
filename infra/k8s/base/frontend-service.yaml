@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sikyon-frontend
+  labels:
+    app: sikyon-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: sikyon-frontend
+  ports:
+    - name: http
+      port: 3100
+      targetPort: 8080
