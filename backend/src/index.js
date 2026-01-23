@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const { metricsMiddleware, metricsHandler } = require('./middleware/metrics');
 
 // Load environment variables
 dotenv.config();
@@ -16,6 +17,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Prometheus metrics middleware (before routes)
+app.use(metricsMiddleware);
+
 // Serve static data files
 app.use('/data', express.static(path.join(__dirname, '../public/data')));
 
@@ -27,6 +31,9 @@ app.use('/api/data', dataRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Sikyon API is running' });
 });
+
+// Prometheus metrics endpoint
+app.get('/metrics', metricsHandler);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

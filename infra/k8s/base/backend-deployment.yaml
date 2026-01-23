@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: sikyon-backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3180"
+        prometheus.io/path: "/metrics"
     spec:
       imagePullSecrets:
         - name: ghcr-secret
