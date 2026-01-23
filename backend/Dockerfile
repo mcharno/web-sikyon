@@ -37,15 +37,11 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/yarn.lock ./yarn.lock
 COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
 
-# Create non-root user
-RUN addgroup -g 1000 -S nodejs && \
-    adduser -S nodejs -u 1000
-
-# Change ownership
-RUN chown -R nodejs:nodejs /app
+# Change ownership to existing node user
+RUN chown -R node:node /app
 
 # Switch to non-root user
-USER nodejs
+USER node
 
 # Expose port
 EXPOSE 3180
