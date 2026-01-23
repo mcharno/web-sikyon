@@ -1,24 +1,58 @@
+# Multi-stage build for Node.js Express backend
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Enable Corepack for Yarn 4
+RUN corepack enable
+
+# Copy workspace root files
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+# Copy workspace package files
+COPY backend/package.json ./backend/package.json
+COPY frontend/package.json ./frontend/package.json
+
+# Install all dependencies (workspace will handle it)
+RUN yarn install --frozen-lockfile
+
+# Copy backend source and data
+COPY backend/src ./backend/src
+COPY backend/public ./backend/public
+
+# Production stage
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
-COPY backend/package*.json ./
+# Enable Corepack for Yarn 4
+RUN corepack enable
 
-# Install dependencies
-RUN npm ci --only=production
+# Copy dependencies and source from builder
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.yarn ./.yarn
+COPY --from=builder /app/backend ./backend
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/yarn.lock ./yarn.lock
+COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
 
-# Copy source code
-COPY backend/src ./src
-COPY backend/public ./public
+# Create non-root user
+RUN addgroup -g 1000 -S nodejs && \
+    adduser -S nodejs -u 1000
 
-# Set environment
-ENV NODE_ENV=production
-ENV PORT=3180
+# Change ownership
+RUN chown -R nodejs:nodejs /app
 
+# Switch to non-root user
+USER nodejs
+
+# Expose port
 EXPOSE 3180
 
-# Run as non-root user
-USER node
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3180/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-CMD ["node", "src/index.js"]
+# Start application
+CMD ["node", "backend/src/index.js"]
